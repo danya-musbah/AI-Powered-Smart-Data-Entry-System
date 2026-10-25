@@ -57,6 +57,7 @@ That last step is the point: this is a **human-in-the-loop** system. The AI assi
 - Document-template system (Invoice, Receipt, Customer Form, Purchase Order, General Document) that's easy to extend
 - Analytics view: approval rate, manual correction rate, failure rate, most common document types
 - Fully responsive, accessible UI (semantic HTML, visible focus states, no color-only status indicators)
+- Unified icon system using a single Font Awesome CDN to keep actions, status indicators, and empty states visually consistent across the app
 - **Demo Mode** — the entire app runs against mock data and localStorage with zero backend, for portfolio demos on GitHub Pages
 
 ## Architecture
@@ -147,7 +148,7 @@ AI-Powered-Smart-Data-Entry-System/
 │   ├── analytics.js               # Analytics view
 │   └── app.js                     # Router / view switching / boot sequence
 │
-├── assets/                       # Icons / images (none required — emoji used as icons)
+├── assets/                       # Shared static assets such as icons or images (the current UI uses Font Awesome via CDN)
 │
 ├── backend/
 │   ├── app/
@@ -210,7 +211,7 @@ cp .env.example .env
 | `SUPABASE_STORAGE_BUCKET` | — | Bucket name for uploaded source files |
 | `MAX_UPLOAD_SIZE_MB` | — | Upload size limit |
 
-The frontend has **no `.env` file** — its only configuration is `PRODUCTION_API_BASE_URL` inside `js/api.js`, since GitHub Pages serves plain static files.
+The frontend has **no `.env` file** — it uses the configuration in `js/api.js` (for example `window.__API_BASE_URL__` or the default production/development base URLs) and falls back to Demo Mode automatically when the backend is not reachable.
 
 ## Supabase Setup
 
@@ -260,7 +261,7 @@ GitHub Pages hosts **only the static frontend** — it cannot run the FastAPI ba
 2. In your repo, go to **Settings → Pages**.
 3. Under **Build and deployment**, choose **Deploy from a branch**, select your default branch, and set the folder to `/ (root)` — since `index.html` is already at the project root.
 4. Save. GitHub Pages will publish at `https://your-username.github.io/AI-Powered-Smart-Data-Entry-System/`.
-5. Update `PRODUCTION_API_BASE_URL` in `js/api.js` to point at your deployed backend (see below), then commit and push — GitHub Pages redeploys automatically.
+5. Update the API base URL in `js/api.js` (or set `window.__API_BASE_URL__` before the app loads) to point at your deployed backend, then commit and push — GitHub Pages redeploys automatically.
 
 Without a deployed backend, the published site still works end-to-end in Demo Mode, which is enough for a portfolio walkthrough.
 

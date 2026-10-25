@@ -116,8 +116,9 @@
             <div class="section-title">API Configuration</div>
             <p style="font-size:13px">
               This frontend talks to the backend through a single centralized base URL defined in
-              <code class="mono">js/api.js</code>. Update <code class="mono">PRODUCTION_API_BASE_URL</code> there
-              once your FastAPI backend is deployed.
+              <code class="mono">js/api.js</code>. Set <code class="mono">window.__API_BASE_URL__</code>
+              before the app loads, or edit the default production/development URLs in that file once your
+              FastAPI backend is deployed.
             </p>
             <p style="font-size:13px">
               Current base URL: <code class="mono" id="settings-base-url"></code>
