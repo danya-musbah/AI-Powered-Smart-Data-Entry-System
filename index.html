@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI-Powered Smart Data Entry System</title>
+  <meta name="description" content="Human-in-the-loop AI data entry platform: OCR, AI field extraction, confidence scoring, and review workflow." />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+
+  <!-- Mobile top bar (hidden on desktop via responsive.css) -->
+  <div class="mobile-topbar">
+    <span class="brand-name">Smart Data Entry</span>
+    <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Open navigation menu"><i class="fa-solid fa-bars"></i></button>
+  </div>
+
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+  <div class="app-shell">
+    <!-- =========================== Sidebar =========================== -->
+    <nav class="sidebar" id="sidebar" aria-label="Primary">
+      <div class="sidebar-brand">
+        <div class="brand-mark" aria-hidden="true"><i class="fa-solid fa-brain"></i></div>
+        <div>
+          <div class="brand-name">Smart Data Entry</div>
+          <span class="brand-sub">Document Intelligence</span>
+        </div>
+      </div>
+
+      <div class="sidebar-nav">
+        <button class="nav-item" data-view="dashboard" aria-current="page">
+          <span class="nav-icon" aria-hidden="true"><i class="fa-solid fa-chart-column"></i></span> Dashboard
+        </button>
+        <button class="nav-item" data-view="documents">
+          <span class="nav-icon" aria-hidden="true"><i class="fa-solid fa-folder-open"></i></span> Documents
+        </button>
+        <button class="nav-item" data-view="review">
+          <span class="nav-icon" aria-hidden="true"><i class="fa-solid fa-pen-to-square"></i></span> Data Entry
+        </button>
+        <button class="nav-item" data-view="templates">
+          <span class="nav-icon" aria-hidden="true"><i class="fa-solid fa-layer-group"></i></span> Templates
+        </button>
+        <button class="nav-item" data-view="analytics">
+          <span class="nav-icon" aria-hidden="true"><i class="fa-solid fa-chart-line"></i></span> Analytics
+        </button>
+        <button class="nav-item" data-view="settings">
+          <span class="nav-icon" aria-hidden="true"><i class="fa-solid fa-gear"></i></span> Settings
+        </button>
+      </div>
+
+      <div class="sidebar-footer">
+        <span class="mode-pill" id="mode-pill"><span class="dot"></span> Checking backend…</span>
+      </div>
+    </nav>
+
+    <!-- =========================== Main column =========================== -->
+    <div class="main-col">
+      <header class="topbar">
+        <div class="topbar-title">
+          <h1 id="topbar-title-text">Dashboard</h1>
+          <span class="breadcrumb">AI-Powered Smart Data Entry System</span>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-accent" onclick="Router.setView('review'); document.getElementById('dropzone')?.scrollIntoView({behavior:'smooth'})">
+            <i class="fa-solid fa-plus"></i> Upload Document
+          </button>
+        </div>
+      </header>
+
+      <main id="main-content">
+
+        <!-- ---------------- Dashboard ---------------- -->
+        <section class="view is-active" id="view-dashboard" aria-label="Dashboard"></section>
+
+        <!-- ---------------- Documents ---------------- -->
+        <section class="view" id="view-documents" aria-label="Documents"></section>
+
+        <!-- ---------------- Data Entry / Upload + Review ---------------- -->
+        <section class="view" id="view-review" aria-label="Data Entry">
+          <div class="card card-pad mb-4">
+            <div class="section-title">Upload a Document</div>
+            <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Upload a document, click or drag and drop">
+              <div class="scan-sweep" aria-hidden="true"></div>
+              <div class="dz-icon" aria-hidden="true"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+              <h3>Drag &amp; drop a file, or click to browse</h3>
+              <p>The system will run OCR, extract fields with AI, and flag anything that needs your review.</p>
+              <div class="dz-formats">Supported: PDF, JPG, JPEG, PNG · Max 15MB</div>
+              <input type="file" id="file-input" class="sr-only" accept=".pdf,.jpg,.jpeg,.png" multiple aria-hidden="true" tabindex="-1" />
+            </div>
+            <div id="upload-file-list"></div>
+          </div>
+
+          <div id="review-workspace">
+            <div class="empty-state">
+              <div class="empty-icon"><i class="fa-solid fa-clipboard-check"></i></div>
+              <h3>No document open for review</h3>
+              <p>Upload a document above, or open one from the Documents list, to start the human-review workflow.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------------- Templates ---------------- -->
+        <section class="view" id="view-templates" aria-label="Templates"></section>
+
+        <!-- ---------------- Analytics ---------------- -->
+        <section class="view" id="view-analytics" aria-label="Analytics"></section>
+
+        <!-- ---------------- Settings ---------------- -->
+        <section class="view" id="view-settings" aria-label="Settings">
+          <div class="card card-pad" style="max-width:560px">
+            <div class="section-title">API Configuration</div>
+            <p style="font-size:13px">
+              This frontend talks to the backend through a single centralized base URL defined in
+              <code class="mono">js/api.js</code>. Update <code class="mono">PRODUCTION_API_BASE_URL</code> there
+              once your FastAPI backend is deployed.
+            </p>
+            <p style="font-size:13px">
+              Current base URL: <code class="mono" id="settings-base-url"></code>
+            </p>
+            <p style="font-size:13px">
+              Add <code class="mono">?demo=1</code> to the page URL to force Demo Mode regardless of backend
+              availability — useful for portfolio walkthroughs.
+            </p>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/upload.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/documents.js"></script>
+  <script src="js/templates.js"></script>
+  <script src="js/analytics.js"></script>
+  <script src="js/review.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.getElementById("settings-base-url") && (document.getElementById("settings-base-url").textContent = Api.baseUrl);
+  </script>
+</body>
+</html>

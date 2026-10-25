@@ -1,0 +1,26 @@
+# --- Environment / secrets ---
+.env
+.env.local
+backend/.env
+
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+
+# --- Node (if any tooling is added later) ---
+node_modules/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# --- Uploaded / generated files (local dev only) ---
+backend/uploads/
+*.log

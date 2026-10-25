@@ -1,0 +1,102 @@
+/* =========================================================
+   Responsive breakpoints
+   Desktop-first overrides for tablet and mobile
+   ========================================================= */
+
+/* ---- Tablet (<=1024px) ---- */
+@media (max-width: 1024px) {
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .dash-grid { grid-template-columns: 1fr; }
+  .review-grid { grid-template-columns: 1fr; }
+  .analytics-grid { grid-template-columns: 1fr; }
+  .template-grid { grid-template-columns: repeat(2, 1fr); }
+  :root { --sidebar-width: 208px; }
+}
+
+/* ---- Mobile / small tablet (<=768px) ---- */
+@media (max-width: 768px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: fixed;
+    inset: 0 20% 0 0;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+    height: 100vh;
+    box-shadow: var(--shadow-lg);
+  }
+  .sidebar.is-open { transform: translateX(0); }
+
+  .sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 15, 25, 0.45);
+    z-index: 39;
+  }
+  .sidebar-backdrop.is-open { display: block; }
+
+  .mobile-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--topbar-height);
+    padding: 0 var(--space-4);
+    background: var(--color-ink);
+    color: var(--color-white);
+    position: sticky;
+    top: 0;
+    z-index: 30;
+  }
+  .mobile-topbar .brand-name { font-weight: 700; font-size: 14px; }
+  .mobile-menu-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.25);
+    color: var(--color-white);
+    border-radius: 8px;
+    width: 36px; height: 36px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .topbar { padding: 0 var(--space-4); }
+  .topbar-title h1 { font-size: 16px; }
+  .view { padding: var(--space-4); }
+
+  .stat-grid { grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+  .stat-card .stat-value { font-size: 22px; }
+
+  .review-grid { grid-template-columns: 1fr; }
+  .doc-preview { min-height: 260px; }
+
+  .template-grid { grid-template-columns: 1fr; }
+
+  .doc-toolbar { flex-direction: column; align-items: stretch; }
+  .doc-toolbar select.input { width: 100%; }
+
+  .data-table { font-size: 12px; }
+  .data-table th, .data-table td { padding: 8px 10px; }
+
+  .review-actions { flex-direction: column-reverse; }
+  .review-actions .btn { width: 100%; }
+
+  .toast-stack { left: var(--space-3); right: var(--space-3); bottom: var(--space-3); }
+  .toast { max-width: none; }
+}
+
+/* ---- Very small phones (<=380px) ---- */
+@media (max-width: 380px) {
+  .stat-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 22px; }
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
